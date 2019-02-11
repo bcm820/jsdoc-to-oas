@@ -1,0 +1,40 @@
+{
+  "name": "jsdoc-to-swaggerdoc",
+  "version": "1.0.0-beta",
+  "description": "Parse JSDoc syntax into a Swagger specification file (OpenAPI) for automated API documentation",
+  "keywords": [
+    "OpenAPI",
+    "Open API",
+    "JSDoc",
+    "Swagger",
+    "parser"
+  ],
+  "author": "Brian Mendoza <bcmendoza@gmail.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bcmendoza/jsdoc-to-swaggerdoc.git"
+  },
+  "bugs": {
+    "url": "https://github.com/bcmendoza/jsdoc-to-swaggerdoc/issues"
+  },
+  "homepage": "https://github.com/bcmendoza/jsdoc-to-swaggerdoc",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "array-includes": "^3.0.3",
+    "doctrine-file": "^2.0.1",
+    "lodash.groupby": "^4.6.0",
+    "lodash.partition": "^4.6.0",
+    "swagger-parser": "^6.0.5"
+  },
+  "devDependencies": {
+    "@types/lodash.groupby": "^4.6.4",
+    "@types/lodash.partition": "^4.6.4",
+    "@types/node": "^10.12.21",
+    "ts-node": "^8.0.2",
+    "typescript": "^2.7.2"
+  }
+}
