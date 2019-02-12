@@ -1,6 +1,6 @@
 {
   "name": "jsdoc-to-swaggerdoc",
-  "version": "1.0.0-beta",
+  "version": "1.0.0",
   "description": "Parse JSDoc syntax into a Swagger specification file (OpenAPI) for automated API documentation",
   "keywords": [
     "OpenAPI",
