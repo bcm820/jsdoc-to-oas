@@ -1,10 +1,9 @@
 import { parseFileContent } from 'doctrine-file';
 import groupBy from 'lodash.groupby';
 import partition from 'lodash.partition';
-import includes from 'array-includes';
-import { flatten } from './utils';
+import { flatten, includes } from './utils';
 
-import { Route, Tag, JSDoc, DocType, Predicate } from './interfaces';
+import { Route, Tag, JSDoc, DocType, Path, Predicate } from './types';
 
 export const parseJSDocs = (ds: string): Tag[] =>
   parseFileContent(ds, {
@@ -108,9 +107,9 @@ const parseRouteDocs = (ds: Tag[]): Route[] =>
 const validateTags = (ts: Tag[]) =>
   ts.filter(({ title: t, description: d, name: n, type: ty, errors: e }) => {
     if (e) throw Error(e.join(','));
-    const isEvent = t === 'event' && includes(d, ':') && includes(d, '-');
+    const isEvent = t === 'event' && !!d.includes(':') && !!d.includes('-');
     const isTags = t === 'tags' && d;
-    const isParam = t === 'param' && ty && n && includes(n, '.');
+    const isParam = t === 'param' && ty && n && !!n.includes('.');
     const isReturns = t === 'returns' && d && ty;
     return !e && (isEvent || isTags || isParam || isReturns);
   });
@@ -156,7 +155,7 @@ const parseType = (typeObj: DocType) => {
 };
 
 const groupByRoute = (ds: Route[]) =>
-  ds.reduce((acc: Object, d: Route) => {
+  ds.reduce((acc: Path, d: Route) => {
     if (d.path in acc)
       return { ...acc, [d.path]: { ...acc[d.path], ...d.data } };
     else return { ...acc, [d.path]: d.data };

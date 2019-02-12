@@ -20,11 +20,11 @@
   },
   "homepage": "https://github.com/bcmendoza/jsdoc-to-swaggerdoc",
   "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc"
   },
   "dependencies": {
-    "array-includes": "^3.0.3",
     "doctrine-file": "^2.0.1",
     "lodash.groupby": "^4.6.0",
     "lodash.partition": "^4.6.0",

@@ -1,11 +1,4 @@
-import { Predicate } from './interfaces';
-
-/**
- * Affirms the identity of some x.
- * @param {*} x
- * @returns {*}
- */
-export const identity = (x: any): any => x;
+import { Predicate } from './types';
 
 /**
  * Flattens a deeply nested array.
@@ -25,7 +18,7 @@ export const flatten = (arr: any[]): any[] =>
  * @param {Predicate} p
  * @returns {number[]}
  */
-export const findIndices = (arr: any[], p: Predicate): number[] =>
+export const findIndices = (arr: any[], p: Predicate<any>): number[] =>
   arr.map((x, i) => (p(x) ? i : -1)).filter(x => x > -1);
 
 /**
@@ -37,3 +30,12 @@ export const findIndices = (arr: any[], p: Predicate): number[] =>
  */
 export const either = (p: Promise<any>): Promise<any> =>
   p.then(right => [null, right]).catch(left => [left, null]);
+
+/**
+ * Tests if an array includes some element.
+ * Only works for primitives (equality op).
+ * @param {*} x
+ * @returns {boolean}
+ */
+export const includes = (arr: any[], x: any): boolean =>
+  !!arr.find(a => a === x);
