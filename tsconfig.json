@@ -4,10 +4,10 @@
     "target": "es2017",
     "lib": ["es2017"],
     "outDir": "dist",
-    // "declaration": true,
+    "declaration": true,
     "strict": true,
     "esModuleInterop": true,
-    "noImplicitAny": false
+    "noImplicitAny": true
   },
   "exclude": ["node_modules", "dist", "examples"]
 }

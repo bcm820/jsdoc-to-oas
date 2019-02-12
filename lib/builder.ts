@@ -1,4 +1,4 @@
-import { Server, Config, Options } from './interfaces';
+import { Server, Config, Options, Path } from './types';
 
 /**
  * Initializes the OpenAPI spec with given configuration and options.
@@ -34,11 +34,13 @@ export const initSpec = (config: Config = {}, options: Options = {}) => {
 /**
  * Applies custom servers for given paths (e.g. for testing across servers).
  */
-export const addCustomServers = (pathObjs: Object, servers: Server[]) => {
+export const addCustomServers = (pathObjs: Path, servers: Server[]) => {
   Object.keys(pathObjs).forEach(k => {
     const s = servers.find(s => k.startsWith(s.root as string));
     if (s)
-      pathObjs[k].servers = [{ url: s.url, description: s.description || '' }];
+      pathObjs[k].servers = [
+        { url: s.url, description: s.description || '' } as Server
+      ];
   });
   return pathObjs;
 };

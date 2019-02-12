@@ -47,4 +47,8 @@ export interface JSDoc {
   readonly returns: Tag[];
 }
 
+export interface Path {
+  [key: string]: any;
+}
+
 export type Predicate<T> = (x: T) => boolean;

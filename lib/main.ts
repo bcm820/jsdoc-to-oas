@@ -2,7 +2,7 @@ import swaggerParser from 'swagger-parser';
 import { checkFiles, readFiles } from './reader';
 import { parseJSDocs, groupByDocType } from './parser';
 import { initSpec, addCustomServers } from './builder';
-import { Config, Options } from './interfaces';
+import { Config, Options } from './types';
 import { either } from './utils';
 
 /**
