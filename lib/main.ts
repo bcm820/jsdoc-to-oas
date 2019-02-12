@@ -2,7 +2,7 @@ import swaggerParser from 'swagger-parser';
 import { checkFiles, readFiles } from './reader';
 import { parseJSDocs, groupByDocType } from './parser';
 import { initSpec, addCustomServers } from './builder';
-import { ConfigObject, OptionsObject } from './interfaces';
+import { Config, Options } from './interfaces';
 import { either } from './utils';
 
 /**
@@ -10,8 +10,8 @@ import { either } from './utils';
  */
 const buildSpecFromString = async (
   docs: string,
-  config: ConfigObject,
-  options: OptionsObject
+  config: Config,
+  options: Options
 ): Promise<any> => {
   const configs = initSpec(config, options);
   const { schemas, paths: tempPaths } = groupByDocType(parseJSDocs(docs));
@@ -26,8 +26,8 @@ const buildSpecFromString = async (
  */
 const buildSpecFromFiles = async (
   docs: string[],
-  config: ConfigObject,
-  options: OptionsObject
+  config: Config,
+  options: Options
 ): Promise<any> => {
   let readErr, parsed: string;
   const [checkErr] = await either(checkFiles(docs));
@@ -43,8 +43,8 @@ const buildSpecFromFiles = async (
  */
 const buildSpec = (
   docs: string | string[],
-  config: ConfigObject = {},
-  options: OptionsObject = {}
+  config: Config,
+  options: Options
 ): Promise<any> =>
   Array.isArray(docs)
     ? buildSpecFromFiles(docs, config, options)

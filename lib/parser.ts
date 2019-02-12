@@ -4,17 +4,9 @@ import partition from 'lodash.partition';
 import includes from 'array-includes';
 import { flatten } from './utils';
 
-import {
-  Container,
-  DocsContainer,
-  ParsedRouteDoc,
-  DocLine,
-  NewDoc,
-  TypeObject,
-  Predicate
-} from './interfaces';
+import { Route, Tag, JSDoc, DocType, Predicate } from './interfaces';
 
-export const parseJSDocs = (ds: string): DocLine[] =>
+export const parseJSDocs = (ds: string): Tag[] =>
   parseFileContent(ds, {
     unwrap: true,
     sloppy: true,
@@ -22,12 +14,12 @@ export const parseJSDocs = (ds: string): DocLine[] =>
     tags: null
   });
 
-const includesP = (p: Predicate) => (xs: Container[]): boolean => !!xs.find(p);
-const titleEquals = (exp: string) => ({ title }: DocLine): boolean =>
+const includesP = (p: Predicate<Tag>) => (xs: Tag[]): boolean => !!xs.find(p);
+const titleEquals = (exp: string): Predicate<Tag> => ({ title }): boolean =>
   title === exp;
-const inclTitle = (s: string): Predicate => includesP(titleEquals(s));
+const inclTitle = (s: string): Predicate<Tag[]> => includesP(titleEquals(s));
 
-export const groupByDocType = (ds: DocLine[]): DocsContainer => {
+export const groupByDocType = (ds: Tag[]) => {
   const [routes, rest] = partition(ds, d => inclTitle('event')(d.tags));
   const schemas = rest.filter(d => inclTitle('typedef')(d.tags));
   return {
@@ -36,14 +28,14 @@ export const groupByDocType = (ds: DocLine[]): DocsContainer => {
   };
 };
 
-const parseSchemaDocs = (ss: DocLine[]): Container =>
-  ss.reduce((acc: Container, s: DocLine) => {
+const parseSchemaDocs = (ss: Tag[]) =>
+  ss.reduce((acc: Object, s: Tag) => {
     const [props, rest] = partition(s.tags, titleEquals('property'));
     const def = rest.find(titleEquals('typedef'));
     if (!def) throw Error(`No typedef assigned for ${s}`);
     const parseProperties = (
-      acc: Container,
-      { name, type, description = '' }: DocLine
+      acc: Object,
+      { name, type, description = '' }: Tag
     ) => ({
       ...acc,
       [name]: { description, ...parseType(type) }
@@ -62,30 +54,30 @@ const parseSchemaDocs = (ss: DocLine[]): Container =>
   }, {});
 
 // Flatten each AST object by assigning tags to k/v pairs
-const parseRouteDocs = (ds: DocLine[]): ParsedRouteDoc[] =>
+const parseRouteDocs = (ds: Tag[]): Route[] =>
   ds.map(d => {
-    const newDoc: any = {
+    const JSDoc: any = {
       ...d,
       ...groupBy(validateTags(d.tags), t => t.title)
     };
-    const { event: e, tags: t, param: p, returns: r }: NewDoc = newDoc;
+    const { event: e, tags: t, param: p, returns: r }: JSDoc = JSDoc;
 
     // Event
-    const [method, route, fn] = flatten(
+    const [method, path, fn] = flatten(
       e[0].description.split(':').map(s => s.split('-'))
     ).map(s => s.trim());
-    newDoc.operationId = fn;
-    delete newDoc.event;
+    JSDoc.operationId = fn;
+    delete JSDoc.event;
 
     // Tags
-    if (t) newDoc.tags = t[0].description.split(',').map(s => s.trim());
+    if (t) JSDoc.tags = t[0].description.split(',').map(s => s.trim());
 
     // Param
     const [body, pars] = partition(p, par => par.name.startsWith('body'));
     if (body.length)
-      newDoc.requestBody = buildObj(body[0].description, body[0].type);
+      JSDoc.requestBody = buildObj(body[0].description, body[0].type);
     if (pars.length)
-      newDoc.parameters = pars.map(par => {
+      JSDoc.parameters = pars.map(par => {
         const [queryOrPath, name] = par.name.split('.');
         return {
           required: par.type.type !== 'OptionalType',
@@ -97,23 +89,23 @@ const parseRouteDocs = (ds: DocLine[]): ParsedRouteDoc[] =>
           }
         };
       });
-    delete newDoc.param;
+    delete JSDoc.param;
 
     // Returns
     if (r)
-      newDoc.responses = r.reduce((acc, r) => {
+      JSDoc.responses = r.reduce((acc, r) => {
         const [code, desc] = r.description.split('-').map(s => s.trim());
         return { ...acc, [code]: buildObj(desc, r.type) };
       }, {});
-    delete newDoc.returns;
+    delete JSDoc.returns;
 
     return {
-      route,
-      routeObj: { [method.toLowerCase()]: newDoc }
+      path,
+      data: { [method.toLowerCase()]: JSDoc }
     };
   });
 
-const validateTags = (ts: DocLine[]) =>
+const validateTags = (ts: Tag[]) =>
   ts.filter(({ title: t, description: d, name: n, type: ty, errors: e }) => {
     if (e) throw Error(e.join(','));
     const isEvent = t === 'event' && includes(d, ':') && includes(d, '-');
@@ -123,7 +115,7 @@ const validateTags = (ts: DocLine[]) =>
     return !e && (isEvent || isTags || isParam || isReturns);
   });
 
-const buildObj = (description: string = '', type: TypeObject): Container => ({
+const buildObj = (description: string = '', type: DocType) => ({
   description,
   content: {
     'application/json': {
@@ -132,7 +124,7 @@ const buildObj = (description: string = '', type: TypeObject): Container => ({
   }
 });
 
-const parseType = (typeObj: TypeObject): Container => {
+const parseType = (typeObj: DocType) => {
   const { type, name, expression, applications, elements } = typeObj;
   const prims = ['integer', 'number', 'string', 'boolean'];
   switch (type) {
@@ -163,9 +155,9 @@ const parseType = (typeObj: TypeObject): Container => {
   }
 };
 
-const groupByRoute = (ds: ParsedRouteDoc[]): Container =>
-  ds.reduce((acc: Container, d: ParsedRouteDoc) => {
-    if (d.route in acc)
-      return { ...acc, [d.route]: { ...acc[d.route], ...d.routeObj } };
-    else return { ...acc, [d.route]: d.routeObj };
+const groupByRoute = (ds: Route[]) =>
+  ds.reduce((acc: Object, d: Route) => {
+    if (d.path in acc)
+      return { ...acc, [d.path]: { ...acc[d.path], ...d.data } };
+    else return { ...acc, [d.path]: d.data };
   }, {});

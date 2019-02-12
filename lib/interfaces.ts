@@ -1,64 +1,50 @@
-export interface Container {
-  [key: string]: Object;
+export interface Server {
+  readonly root?: string;
+  readonly url: string;
+  readonly description?: string;
 }
 
-export interface MainServerObject {
-  url: string;
-  description?: string;
+export interface Config {
+  readonly title?: string;
+  readonly version?: string;
+  readonly description?: string;
+  readonly servers?: Server[];
 }
 
-export interface ServerObject {
-  root: string;
-  url: string;
-  description?: string;
+export interface Options {
+  readonly servers?: Server[];
+  readonly termsOfService?: string;
+  readonly contact?: Object;
+  readonly license?: Object;
 }
 
-export interface ConfigObject {
-  title?: string;
-  version?: string;
-  description?: string;
-  servers?: MainServerObject[];
+export interface Route {
+  readonly path: string;
+  readonly data: Object;
 }
 
-export interface OptionsObject {
-  servers?: ServerObject[];
-  termsOfService?: string;
-  contact?: Container;
-  license?: Container;
+export interface DocType {
+  readonly type: string;
+  readonly name: string;
+  readonly expression: { name: string };
+  readonly applications: { name: string }[];
+  readonly elements: { name: string }[];
 }
 
-export interface DocsContainer {
-  paths: Container;
-  schemas: Container;
+export interface Tag {
+  readonly title: string;
+  readonly description: string;
+  readonly name: string;
+  readonly tags: any[];
+  readonly type: DocType;
+  readonly errors?: string[];
 }
 
-export interface ParsedRouteDoc {
-  route: string;
-  routeObj: Container;
+export interface JSDoc {
+  readonly event: Tag[];
+  readonly tags: Tag[];
+  readonly param: Tag[];
+  readonly returns: Tag[];
 }
 
-export interface TypeObject {
-  type: string;
-  name: string;
-  expression: { name: string };
-  applications: { name: string }[];
-  elements: { name: string }[];
-}
-
-export interface DocLine {
-  title: string;
-  description: string;
-  name: string;
-  tags: any[];
-  type: TypeObject;
-  errors?: string[];
-}
-
-export interface NewDoc {
-  event: DocLine[];
-  tags: DocLine[];
-  param: DocLine[];
-  returns: DocLine[];
-}
-
-export type Predicate = (x: any) => boolean;
+export type Predicate<T> = (x: T) => boolean;
