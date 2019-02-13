@@ -1,9 +1,9 @@
-import { Server, Config, Options, Path } from './types';
+import { IConfig, IOptions, IPath, IServer } from './types';
 
 /**
  * Initializes the OpenAPI spec with given configuration and options.
  */
-export const initSpec = (config: Config = {}, options: Options = {}) => {
+export const initSpec = (config: IConfig = {}, options: IOptions = {}) => {
   if (!config.servers && !options.servers)
     throw Error('Server(s) not specified for all paths!');
 
@@ -16,8 +16,8 @@ export const initSpec = (config: Config = {}, options: Options = {}) => {
     version: string;
     description: string;
     termsOfService?: string;
-    contact?: Object;
-    license?: Object;
+    contact?: object;
+    license?: object;
   };
 
   if (options.termsOfService) info.termsOfService = options.termsOfService;
@@ -34,12 +34,12 @@ export const initSpec = (config: Config = {}, options: Options = {}) => {
 /**
  * Applies custom servers for given paths (e.g. for testing across servers).
  */
-export const addCustomServers = (pathObjs: Path, servers: Server[]) => {
+export const addCustomServers = (pathObjs: IPath, servers: IServer[]) => {
   Object.keys(pathObjs).forEach(k => {
     const s = servers.find(s => k.startsWith(s.root as string));
     if (s)
       pathObjs[k].servers = [
-        { url: s.url, description: s.description || '' } as Server
+        { url: s.url, description: s.description || '' } as IServer
       ];
   });
   return pathObjs;

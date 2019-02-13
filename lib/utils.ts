@@ -1,4 +1,4 @@
-import { Predicate } from './types';
+import { IPredicate } from './types';
 
 /**
  * Flattens a deeply nested array.
@@ -15,10 +15,10 @@ export const flatten = (arr: any[]): any[] =>
 /**
  * Returns an array of numbers whose elements satisfy a predicate.
  * @param {*[]} arr
- * @param {Predicate} p
+ * @param {IPredicate} p
  * @returns {number[]}
  */
-export const findIndices = (arr: any[], p: Predicate<any>): number[] =>
+export const findIndices = (arr: any[], p: IPredicate<any>): number[] =>
   arr.map((x, i) => (p(x) ? i : -1)).filter(x => x > -1);
 
 /**

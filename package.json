@@ -22,9 +22,11 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "tslint 'lib/**/*.ts'"
   },
   "dependencies": {
+    "@types/jest": "^24.0.3",
     "doctrine-file": "^2.0.1",
     "lodash.groupby": "^4.6.0",
     "lodash.partition": "^4.6.0",
@@ -35,6 +37,7 @@
     "@types/lodash.partition": "^4.6.4",
     "@types/node": "^10.12.21",
     "ts-node": "^8.0.2",
-    "typescript": "^2.7.2"
+    "tslint": "^5.12.1",
+    "typescript": "^2.9.2"
   }
 }

@@ -8,10 +8,10 @@ import { either, findIndices } from './utils';
  */
 const readFile = promisify(fs.readFile);
 export const checkFiles = async (docs: string[]): Promise<void> => {
-  const exists = docs.map(fp => fs.existsSync(fp));
-  const notExists = findIndices(exists, b => !b);
-  if (notExists.length)
-    throw Error(`Not found:\n${notExists.map(i => `${docs[i]}\n`)}`);
+  const attempts = docs.map(fp => fs.existsSync(fp));
+  const notFound = findIndices(attempts, b => !b);
+  if (notFound.length)
+    throw Error(`Not found:\n${notFound.map(i => `${docs[i]}\n`)}`);
 };
 
 /**

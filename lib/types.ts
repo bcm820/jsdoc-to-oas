@@ -1,29 +1,29 @@
-export interface Server {
+export interface IServer {
   readonly root?: string;
   readonly url: string;
   readonly description?: string;
 }
 
-export interface Config {
+export interface IConfig {
   readonly title?: string;
   readonly version?: string;
   readonly description?: string;
-  readonly servers?: Server[];
+  readonly servers?: IServer[];
 }
 
-export interface Options {
-  readonly servers?: Server[];
+export interface IOptions {
+  readonly servers?: IServer[];
   readonly termsOfService?: string;
-  readonly contact?: Object;
-  readonly license?: Object;
+  readonly contact?: object;
+  readonly license?: object;
 }
 
-export interface Route {
+export interface IRoute {
   readonly path: string;
-  readonly data: Object;
+  readonly data: object;
 }
 
-export interface DocType {
+export interface IDocType {
   readonly type: string;
   readonly name: string;
   readonly expression: { name: string };
@@ -31,24 +31,24 @@ export interface DocType {
   readonly elements: { name: string }[];
 }
 
-export interface Tag {
+export interface ITag {
   readonly title: string;
   readonly description: string;
   readonly name: string;
   readonly tags: any[];
-  readonly type: DocType;
+  readonly type: IDocType;
   readonly errors?: string[];
 }
 
-export interface JSDoc {
-  readonly event: Tag[];
-  readonly tags: Tag[];
-  readonly param: Tag[];
-  readonly returns: Tag[];
+export interface IJSDoc {
+  readonly event: ITag[];
+  readonly tags: ITag[];
+  readonly param: ITag[];
+  readonly returns: ITag[];
 }
 
-export interface Path {
+export interface IPath {
   [key: string]: any;
 }
 
-export type Predicate<T> = (x: T) => boolean;
+export type IPredicate<T> = (x: T) => boolean;

@@ -121,9 +121,9 @@ Declaring a schema is as easy as adding a `@typedef` with several `@property` ta
 Here are its two signatures (depending on if using an array of file paths or string of docs):
 
 ```
-function buildSpec(filePaths: string[], config: Object, options: Object): Spec
+function buildSpec(filePaths: string[], config: object, options: object): Spec
 
-function buildSpec(docs: string, config: Object, options: Object): Spec
+function buildSpec(docs: string, config: object, options: object): Spec
 ```
 
 ### File Paths
