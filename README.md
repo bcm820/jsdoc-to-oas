@@ -1,8 +1,8 @@
-# JSDoc to Swagger Documentation (OpenAPI)
+# JSDoc to OpenAPI Specification
 
-**jsdoc-to-swaggerdoc** is a tool for Node.js-based RESTful API service developers to automate their documentation writing process from the start of their development process.
+**jsdoc-to-oas** is a tool for Node.js-based RESTful API service developers to automate their documentation writing process from the start of their development process.
 
-It parses [JSDoc](http://usejsdoc.org)-like syntax into an [Swagger/OpenAPI Specification](https://swagger.io/docs/specification/about/), a standardized way of describing RESTful APIs. By documenting your code with comments like the following,
+It parses [JSDoc](http://usejsdoc.org)-like syntax into an [OpenAPI Specification](https://swagger.io/docs/specification/about/), a standardized way of describing RESTful APIs. By documenting your code with comments like the following,
 
 ```
 /**
@@ -20,11 +20,11 @@ It parses [JSDoc](http://usejsdoc.org)-like syntax into an [Swagger/OpenAPI Spec
 ## Getting Started
 
 ```
-npm install jsdoc-to-swaggerdoc
+npm install jsdoc-to-oas
 ```
 
 ```
-const buildSpec = require('jsdoc-to-swaggerdoc');
+const buildSpec = require('jsdoc-to-oas');
 
 const filesToRead = ['./routes.js', './models.js']
 const config = {

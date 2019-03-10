@@ -1,6 +1,6 @@
 {
   "name": "jsdoc-to-oas",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Parse JSDoc syntax into an OpenAPI specification file for automated API documentation",
   "keywords": [
     "OpenAPI",
