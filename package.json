@@ -1,7 +1,7 @@
 {
-  "name": "jsdoc-to-swaggerdoc",
+  "name": "jsdoc-to-oas",
   "version": "1.0.0",
-  "description": "Parse JSDoc syntax into a Swagger specification file (OpenAPI) for automated API documentation",
+  "description": "Parse JSDoc syntax into an OpenAPI specification file for automated API documentation",
   "keywords": [
     "OpenAPI",
     "Open API",
@@ -13,12 +13,12 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bcmendoza/jsdoc-to-swaggerdoc.git"
+    "url": "git+https://github.com/bcmendoza/jsdoc-to-oas.git"
   },
   "bugs": {
-    "url": "https://github.com/bcmendoza/jsdoc-to-swaggerdoc/issues"
+    "url": "https://github.com/bcmendoza/jsdoc-to-oas/issues"
   },
-  "homepage": "https://github.com/bcmendoza/jsdoc-to-swaggerdoc",
+  "homepage": "https://github.com/bcmendoza/jsdoc-to-oas",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "scripts": {
